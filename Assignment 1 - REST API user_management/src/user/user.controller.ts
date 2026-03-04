@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Post,
+  Put,
   Patch,
   Delete,
   Param,
@@ -57,6 +58,16 @@ export class UserController {
   @Roles('admin')
   @HttpCode(HttpStatus.OK)
   update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.userService.update(Number(id), updateUserDto);
+  }
+
+  @Put(':id')
+  @Roles('admin')
+  @HttpCode(HttpStatus.OK)
+  replace(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
