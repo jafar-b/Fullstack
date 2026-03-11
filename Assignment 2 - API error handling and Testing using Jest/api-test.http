@@ -1,0 +1,294 @@
+@baseUrl = http://localhost:3000
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiYWRtaW5AYmVuY2htYXJrLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3Mjk0NzMxOCwiZXhwIjoxNzczMDMzNzE4fQ.mMvVwZA-x81Jk-g56hNqG7cX33SSjyytz0E_vTsuJ8I
+
+### Simple test request
+GET {{baseUrl}}/api/v1/users
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
+###
+
+# login into system
+POST {{baseUrl}}/api/v1/auth/login/
+Content-Type: application/json
+
+{
+  "email": "admin@benchmark.com",
+  "password": "admin123"
+}
+
+###
+# valid user creation with strong password
+# POST {{baseUrl}}/api/v1/users
+# Content-Type: application/json
+# Authorization: Bearer {{token}}
+
+# {
+#   "email": "john.doe@example.com",
+#   "password": "user1234!",
+#   "firstName": "John",
+#   "lastName": "Doe"
+# }
+
+###
+
+# password too short (less than 8 characters)
+POST {{baseUrl}}/api/v1/users
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "email": "testuser@example.com",
+  "password": "user123",
+  "firstName": "user",
+  "lastName": "test"
+}
+
+###
+
+###
+
+# email already exists
+POST {{baseUrl}}/api/v1/users
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "email": "testuser@example.com",
+  "password": "password123",
+  "firstName": "John",
+  "lastName": "Doe"
+}
+
+###
+
+###
+
+# must be valid email address
+POST {{baseUrl}}/api/v1/users
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "email": "test@@example.com",
+  "password": "password123!",
+  "firstName": "John",
+  "lastName": "Doe"
+}
+
+###
+
+###
+
+# email format incorrect
+POST {{baseUrl}}/api/v1/users
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "email": "invalid-email",
+  "password": "SecurePass123!",
+  "firstName": "John",
+  "lastName": "Doe"
+}
+
+###
+
+
+###
+
+# first name too short
+POST {{baseUrl}}/api/v1/users
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "email": "test@example.com",
+  "password": "SecurePass123!",
+  "firstName": "J",
+  "lastName": "Doe"
+}
+
+###
+
+###
+
+# last name too short
+POST {{baseUrl}}/api/v1/users
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "email": "test@example.com",
+  "password": "SecurePass123!",
+  "firstName": "John",
+  "lastName": "D"
+}
+
+###
+
+###
+
+# multiple validation errors
+POST {{baseUrl}}/api/v1/users
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "email": "invalid.email",
+  "password": "weak",
+  "firstName": "J",
+  "lastName": "D@e"
+}
+
+###
+
+###
+
+# missing required email field
+POST {{baseUrl}}/api/v1/users
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "password": "SecurePass123!",
+  "firstName": "John",
+  "lastName": "Doe"
+}
+
+###
+
+###
+
+# missing required password field
+POST {{baseUrl}}/api/v1/users
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "email": "test@example.com",
+  "firstName": "John",
+  "lastName": "Doe"
+}
+
+###
+
+
+
+# GET {{baseUrl}}/api/v1/users
+# Content-Type: application/json
+# Authorization: Bearer {{token}}
+
+GET {{baseUrl}}/api/v1/users?page=1&limit=10&role=admin&sort=DESC
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
+# GET {{baseUrl}}/api/v1/users?page=2&limit=20
+# Content-Type: application/json
+# Authorization: Bearer {{token}}
+
+# GET {{baseUrl}}/api/v1/users?role=admin
+# Content-Type: application/json
+# Authorization: Bearer {{token}}
+
+# GET {{baseUrl}}/api/v1/users/1
+# Content-Type: application/json
+# Authorization: Bearer {{token}}
+
+# change first name
+PATCH {{baseUrl}}/api/v1/users/7
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "firstName": "Jonathan"
+}
+
+###
+
+# change email
+PATCH {{baseUrl}}/api/v1/users/7
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "email": "newemail@example.com"
+}
+
+###
+
+###
+
+# change password with strong password
+PATCH {{baseUrl}}/api/v1/users/2
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "password": "NewSecurePass456!"
+}
+
+###
+
+###
+
+# update with weak password
+PATCH {{baseUrl}}/api/v1/users/2
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "password": "weak"
+}
+
+###
+
+###
+
+# update with invalid email
+PATCH {{baseUrl}}/api/v1/users/2
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "email": "not-an-email"
+}
+
+###
+
+
+###
+
+# #  update user that doesn't exist
+PATCH {{baseUrl}}/api/v1/users/9999
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "firstName": "Updated",
+  "password": "newPassword456",
+  "lastName": "Smith"
+}
+
+###
+
+#  PUT request update user
+PUT {{baseUrl}}/api/v1/users/8
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "email": "updateduser@example.com",
+  "password": "user1234",
+  "firstName": "updated",
+  "lastName": "updated"
+}
+
+###
+
+DELETE {{baseUrl}}/api/v1/users/9
+Authorization: Bearer {{token}}

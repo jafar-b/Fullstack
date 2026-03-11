@@ -21,12 +21,12 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { ThrottlerGuard } from '@nestjs/throttler';
 
 @Controller('api/v1/users')
-// @UseGuards(ThrottlerGuard, JwtAuthGuard, RolesGuard)
+@UseGuards(ThrottlerGuard, JwtAuthGuard, RolesGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  // @Roles('admin')
+  @Roles('admin')
   @HttpCode(HttpStatus.CREATED)
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
